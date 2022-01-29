@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: auth-depl
+spec:
+  # number of pods to run for auth service
+  replicas: 1
+  # tell depl how to find created pods
+  selector:
+    matchLabels:
+      app: auth
+  # template specifies how to create each individual pod
+  template:
+    metadata:
+      labels:
+        app: auth
+    # specify how the pod is going to behave
+    spec:
+      # containers inside pod (one for now)
+      containers:
+        # name is for logging purposes
+        - name: auth
+          image: dasior/auth
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: auth-srv
+spec:
+  # using ClusterIP by default
+  selector:
+    app: auth
+  ports:
+    - name: auth
+      protocol: TCP
+      port: 3000
+      targetPort: 3000
