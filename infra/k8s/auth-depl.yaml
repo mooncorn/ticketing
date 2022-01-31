@@ -21,6 +21,13 @@ spec:
         # name is for logging purposes
         - name: auth
           image: dasior/auth
+          # communicate environment variables from kubernetes into the container
+          env:
+            - name: JWT_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: jwt-secret
+                  key: JWT_KEY
 ---
 apiVersion: v1
 kind: Service

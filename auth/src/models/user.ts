@@ -22,16 +22,28 @@ interface UserDocument extends mongoose.Document {
   password: string;
 }
 
-const userSchema = new mongoose.Schema({
-  email: {
-    type: String,
-    required: true,
+const userSchema = new mongoose.Schema(
+  {
+    email: {
+      type: String,
+      required: true,
+    },
+    password: {
+      type: String,
+      required: true,
+    },
   },
-  password: {
-    type: String,
-    required: true,
-  },
-});
+  {
+    toJSON: {
+      transform(doc, ret) {
+        ret.id = ret._id;
+        delete ret._id;
+        delete ret.password;
+        delete ret.__v;
+      },
+    },
+  }
+);
 
 // Methods are used to define instance methods
 
@@ -40,21 +52,33 @@ userSchema.statics.build = (attrs: UserAttrs) => {
   return new User(attrs);
 };
 
-userSchema.statics.findByCredentials = async (username, password) => {
-  const user = await User.findOne({ username });
+// userSchema.statics.findByCredentials = async (username, password) => {
+//   const user = await User.findOne({ username });
 
-  if (!user) {
-    throw new BadRequestError('Unable to login');
-  }
+//   if (!user) {
+//     throw new BadRequestError('Unable to login');
+//   }
 
-  const isMatch = await bcrypt.compare(password, user.password);
+//   const isMatch = await bcrypt.compare(password, user.password);
 
-  if (!isMatch) {
-    throw new BadRequestError('Unable to login');
-  }
+//   if (!isMatch) {
+//     throw new BadRequestError('Unable to login');
+//   }
 
-  return user;
-};
+//   return user;
+// };
+
+// userSchema.methods.toJSON = function () {
+//   const user = this;
+//   const userObject = user.toObject();
+
+//   userObject.id = userObject._id;
+//   delete userObject._id;
+//   delete userObject.__v;
+//   delete userObject.password;
+
+//   return userObject;
+// };
 
 // Hash the plain text password
 userSchema.pre('save', async function (done) {
@@ -66,7 +90,5 @@ userSchema.pre('save', async function (done) {
 });
 
 const User = mongoose.model<UserDocument, UserModel>('User', userSchema);
-
-// const user = User.build({ email: 'sdf', password: 'fasd' });
 
 export { User };
