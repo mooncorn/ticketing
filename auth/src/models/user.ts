@@ -1,6 +1,5 @@
 import mongoose from 'mongoose';
 import bcrypt from 'bcrypt';
-import { BadRequestError } from '../errors/bad-request-error';
 
 // An interface that describes the properties
 // that are required to create a new User
