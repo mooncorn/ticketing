@@ -1,23 +1,26 @@
-import axios from 'axios';
+import buildClient from '../api/build-client';
 
 const Landing = ({ currentUser }) => {
   console.log(currentUser);
 
-  return <div>index</div>;
+  return currentUser ? (
+    <h1>You are signed in</h1>
+  ) : (
+    <h1>You are not signed in</h1>
+  );
 };
 
-// Landing.getInitialProps = async () => {
-//   try {
-//     const response = await axios.get(
-//       'http://ticketing.com/api/users/currentuser'
-//     );
+Landing.getInitialProps = async (context) => {
+  try {
+    const client = buildClient(context);
+    const { data } = await client.get('/api/users/currentuser');
 
-//     return response.data;
-//   } catch (err) {
-//     console.log(err);
-//   }
+    return data;
+  } catch (error) {
+    console.log(error);
+  }
 
-//   return {};
-// };
+  return {};
+};
 
 export default Landing;

@@ -20,13 +20,5 @@ export default ({ url, method, body, onSuccess }) => {
     }
   };
 
-  const getFieldError = (fieldName) => {
-    return errors.find((error) => error.field === fieldName)?.message;
-  };
-
-  const getRequestErrors = () => {
-    return errors.filter((error) => error.field === undefined);
-  };
-
-  return { send, getFieldError, getRequestErrors, errors };
+  return { send, errors };
 };
