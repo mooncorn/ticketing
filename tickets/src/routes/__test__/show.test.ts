@@ -32,6 +32,6 @@ it('returns the ticket if the ticket is found', async () => {
   expect(getResponse.body.price).toBe(ticket.price);
 });
 
-it('returns a 400 if id is an invalid ObjectId', async () => {
+it('returns a 400 if id is invalid', async () => {
   await request(app).get('/api/tickets/dfas').send().expect(400);
 });

@@ -6,7 +6,7 @@ import mongoose from 'mongoose';
 
 const router = Router();
 
-const validateId: CustomValidator = (value) => {
+export const validateId: CustomValidator = (value) => {
   return new mongoose.Types.ObjectId(value);
 };
 

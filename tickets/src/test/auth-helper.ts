@@ -1,8 +1,8 @@
 import jwt from 'jsonwebtoken';
 
-export const signin = () => {
+export const signin = (opts?: { id?: number }) => {
   // Build a JWT payload { id, email }
-  const payload = { id: '123', email: 'test@test.com' };
+  const payload = { id: opts?.id ?? '123', email: 'test@test.com' };
 
   // Create the JWT
   const token = jwt.sign(payload, process.env.JWT_KEY!);

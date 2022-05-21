@@ -6,6 +6,8 @@ import cookieSession from 'cookie-session';
 import { currentUser, errorHandler, NotFoundError } from '@dpticketing/common';
 import { createTicketRouter } from './routes/new';
 import { showTicketRouter } from './routes/show';
+import { getAllTicketsRouter } from './routes';
+import { updateTicketRouter } from './routes/update';
 
 const app = express();
 
@@ -22,6 +24,8 @@ app.use(currentUser);
 // Set up routes here
 app.use(createTicketRouter);
 app.use(showTicketRouter);
+app.use(getAllTicketsRouter);
+app.use(updateTicketRouter);
 
 app.all('*', async (req, res, next) => {
   throw new NotFoundError();
