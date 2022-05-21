@@ -10,7 +10,7 @@ Application built with microservices that handles the process of selling and buy
 4. Enable Kubernetes in the Docker settings.
 5. Build and push projects that do not exist on DockerHub.
 
-If the image of a microservice does not exist on DockerHub, navigate to its root direcotory which contains Dockerfile and run 2 commands:
+If the image of a microservice does not exist on DockerHub, navigate to its root directory which contains a Dockerfile and run 2 commands:
 ```
 docker build -t <username>/<project_name> .
 docker push <username>/<project_name>
