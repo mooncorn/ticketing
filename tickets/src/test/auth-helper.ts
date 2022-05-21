@@ -1,14 +1,21 @@
-import request from 'supertest';
-import { app } from '../app';
+import jwt from 'jsonwebtoken';
 
-export const signup = async () => {
-  const email = 'test@test.com';
-  const password = 'test123';
+export const signin = () => {
+  // Build a JWT payload { id, email }
+  const payload = { id: '123', email: 'test@test.com' };
 
-  const response = await request(app)
-    .post('/api/users/signup')
-    .send({ email, password })
-    .expect(201);
+  // Create the JWT
+  const token = jwt.sign(payload, process.env.JWT_KEY!);
 
-  return response.get('Set-Cookie');
+  // Build session Object { jwt: 'JWT' }
+  const session = { jwt: token };
+
+  // Turn session Object into JSON
+  const sessionJson = JSON.stringify(session);
+
+  // Encode JSON as base64
+  const base64 = Buffer.from(sessionJson).toString('base64');
+
+  // Return cookie with encoded data
+  return [`session=${base64}`];
 };

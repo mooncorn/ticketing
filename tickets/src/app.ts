@@ -3,7 +3,9 @@ import 'express-async-errors';
 import { json } from 'body-parser';
 
 import cookieSession from 'cookie-session';
-import { errorHandler, NotFoundError } from '@dpticketing/common';
+import { currentUser, errorHandler, NotFoundError } from '@dpticketing/common';
+import { createTicketRouter } from './routes/new';
+import { showTicketRouter } from './routes/show';
 
 const app = express();
 
@@ -12,11 +14,14 @@ app.use(json());
 app.use(
   cookieSession({
     signed: false,
-    secure: process.env.NODE_ENV !== 'test',
+    // secure: process.env.NODE_ENV !== 'test',
   })
 );
+app.use(currentUser);
 
 // Set up routes here
+app.use(createTicketRouter);
+app.use(showTicketRouter);
 
 app.all('*', async (req, res, next) => {
   throw new NotFoundError();
