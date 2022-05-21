@@ -3,7 +3,7 @@ import { app } from './app';
 
 const start = async () => {
   if (!process.env.JWT_KEY) {
-    throw new Error('JWT_KEY must be defined');
+    throw new Error('JWT_KEY must be defined as an environment variable');
   }
 
   if (!process.env.MONGO_URI) {

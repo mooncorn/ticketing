@@ -1,30 +1,30 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: auth-depl
+  name: tickets-depl
 spec:
-  # number of pods to run for auth service
+  # number of pods to run for tickets service
   replicas: 1
   # tell depl how to find created pods
   selector:
     matchLabels:
-      app: auth
+      app: tickets
   # template specifies how to create each individual pod
   template:
     metadata:
       labels:
-        app: auth
+        app: tickets
     # specify how the pod is going to behave
     spec:
       # containers inside pod (one for now)
       containers:
         # name is for logging purposes
-        - name: auth
-          image: dasior/auth
+        - name: tickets
+          image: dasior/tickets
           # communicate environment variables from kubernetes into the container
           env:
             - name: MONGO_URI
-              value: 'mongodb://auth-mongo-srv:27017/auth'
+              value: 'mongodb://tickets-mongo-srv:27017/tickets'
             - name: JWT_KEY
               valueFrom:
                 secretKeyRef:
@@ -34,13 +34,13 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: auth-srv
+  name: tickets-srv
 spec:
   # using ClusterIP by default
   selector:
-    app: auth
+    app: tickets
   ports:
-    - name: auth
+    - name: tickets
       protocol: TCP
       port: 3000
       targetPort: 3000
