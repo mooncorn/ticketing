@@ -1,16 +1,22 @@
 import { Message, Stan } from 'node-nats-streaming';
+import { Subjects } from './subjects';
 
-export abstract class Listener {
+interface Event {
+  subject: Subjects;
+  data: any;
+}
+
+export abstract class Listener<T extends Event> {
   /**
    * Name of the event.
    */
-  abstract subject: string;
+  abstract subject: T['subject']; // typeof subject from T
   /**
    * A queue group name prevents the dump of history for a durable subscription
    * if connection is lost. It also makes sure an event is sent to one instance of a service.
    */
   abstract queueGroupName: string;
-  abstract onMessage(data: any, msg: Message): void;
+  abstract onMessage(data: T['data'], msg: Message): void;
   private client: Stan;
   protected ackWait = 5 * 1000;
 
