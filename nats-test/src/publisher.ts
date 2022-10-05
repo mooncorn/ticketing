@@ -9,10 +9,12 @@ const stan = nats.connect('ticketing', 'abc', {
 
 const ticketCreatedPublisher = new TicketCreatedPublisher(stan);
 
-stan.on('connect', () => {
-  ticketCreatedPublisher.publish({
+stan.on('connect', async () => {
+  const guid = await ticketCreatedPublisher.publish({
     id: '123',
     title: 'concert',
     price: 20,
   });
+
+  console.log(guid);
 });
